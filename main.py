@@ -22,8 +22,9 @@ def run():
         'data_dir': data_dir,
     }
 
-    pipeline = superman.Pipeline(conf=conf, data_dir=data_dir, force=True)
-    pipeline.append_task(superman.PrepareManFiles)
+    pipeline = superman.Pipeline(conf=conf, data_dir=data_dir, force=False)
+    pipeline.append_task(superman.PrepareManFiles, False)
+    pipeline.append_task(superman.PlainManTask, True)
 
     pipeline.execute()
 

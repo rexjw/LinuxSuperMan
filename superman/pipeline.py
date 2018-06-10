@@ -19,7 +19,7 @@ class Pipeline:
 
     def execute(self):
         data_path = Path(self._data_dir)
-        c = 0
+        result, c = True, 0
         for (task_class, force) in self._task_class_list:
             _i = data_path / ("_%d" % c)
             _o = data_path / ("_%d" % (c+1))
@@ -27,7 +27,12 @@ class Pipeline:
             _l.debug(_o)
             task = task_class(_i, _o, force or self._force)
             _l.debug(task)
-            task.execute()
+            result = task.execute()
+            if result is True:
+                c += 1
+            else:
+                break
+        pass
 
 
 
