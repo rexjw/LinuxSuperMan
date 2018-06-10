@@ -106,4 +106,8 @@ venv.bak/
 ##
 _data
 _superman
+# PyCharm project files
+.idea
+
+
 
