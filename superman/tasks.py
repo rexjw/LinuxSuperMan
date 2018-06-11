@@ -104,22 +104,21 @@ class PlainManTask(SimpleTask):
         with i_file.open() as i_f, o_file.open(mode='w') as o_f:
             buff = ""
 
-            def _ab(b):
-                if len(b):
-                    o_f.write(b)
-                    b = ""
-
             for line in i_f:
                 if line.startswith('.\\"') or line.startswith('.TH'):
                     continue
 
                 elif line.startswith('.SH COLOPHON'):
                     if len(buff):
-                        _ab(buff)
+                        o_f.write(buff)
+                        o_f.write('\n')
                     break
 
                 elif line.startswith('.SH'):
-                    _ab(buff)
+                    if len(buff):
+                        o_f.write(buff)
+                        o_f.write('\n')
+                        buff = ""
                     continue
 
                 else:
@@ -129,8 +128,9 @@ class PlainManTask(SimpleTask):
                 if len(line):
                     buff += line
                     if buff[-1] in '.:':
-                        buff += '\n'
-                        _ab(buff)
+                        o_f.write(buff)
+                        o_f.write('\n')
+                        buff = ""
                     else:
                         buff += ' '
 
